@@ -1,6 +1,5 @@
 from abc import ABC
-import logging
-
+from src.logger import logger
 from src.messengers import WhatsappMessenger, TelegramMessenger
 from src.payload import Payload
 
@@ -27,15 +26,15 @@ class MessageHandler(MessageInterface):
         push = PushNotification()
         telegram_messages = []
         for message in messages:
-            type = payload.get_type(message)
-            if type == TELEGRAM:
+            payload_type = payload.get_type(message)
+            if payload_type == TELEGRAM:
                 telegram_messages.append(message)
-            elif type == WHATSAPP:
+            elif payload_type == WHATSAPP:
                 whatsapp.send(message)
-            elif type == PUSH:
+            elif payload_type == PUSH:
                 push.send(message)
             else:
-                logging.log(logging.ERROR, "Unknown message type")
+                logger.error("Unknown message type")
         if telegram_messages:
             telegram.send(telegram_messages)
         return payload

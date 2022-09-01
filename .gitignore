@@ -4,3 +4,5 @@
 .env
 .mypy_cache
 .idea/
+
+logfile.txt
